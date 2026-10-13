@@ -1,11 +1,19 @@
-version: '3.8'
-
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-}
     container_name: yoli-nails-web
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=production
+    # Variables de servidor (tokens de Shopify, secreto del webhook): ver .env.example
+    env_file:
+      - .env
+    volumes:
+      # Caché de datos/ISR de Next.js persistente entre reinicios del contenedor
+      - next-cache:/app/.next/cache
     restart: unless-stopped
+
+volumes:
+  next-cache:

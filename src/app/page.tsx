@@ -97,6 +97,7 @@ export default function Home() {
               src={item.image}
               alt={item.label}
               fill
+              sizes="(min-width: 768px) 25vw, 50vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-ink/0 transition-colors group-hover:bg-ink/30" />
@@ -114,6 +115,7 @@ export default function Home() {
               src="/images/hand-silhouette.png"
               alt=""
               fill
+              sizes="(min-width: 768px) 42vw, 95vw"
               className="object-contain object-left"
             />
           </div>

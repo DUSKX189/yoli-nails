@@ -14,7 +14,8 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { totalCount, openCart } = useCart();
+  const { cart, openCart } = useCart();
+  const totalCount = cart?.totalQuantity ?? 0;
 
   return (
     <>
@@ -22,11 +23,11 @@ export default function Header() {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-2xl border border-white/15 bg-ink/25 px-6 py-4 text-white shadow-lg shadow-ink/10 backdrop-blur-md md:px-10 md:py-5">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
-              src="/logo/yn-logo.svg"
-              alt="YN"
+              src="/logo/yn-logo-white.svg"
+              alt="YOLI NAILS — Inicio"
               width={56}
               height={56}
-              className="h-12 w-12 invert md:h-14 md:w-14"
+              className="h-12 w-12 md:h-14 md:w-14"
               priority
             />
           </Link>
@@ -47,7 +48,9 @@ export default function Header() {
             <button
               type="button"
               onClick={openCart}
-              aria-label="Abrir carrito"
+              aria-label={
+                totalCount > 0 ? `Abrir carrito (${totalCount} artículos)` : "Abrir carrito"
+              }
               className="relative flex h-11 w-11 items-center justify-center"
             >
               <svg
@@ -71,7 +74,9 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              aria-label="Abrir menú"
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
               className="flex h-11 w-11 flex-col items-center justify-center gap-2 md:hidden"
             >
               <span className="h-0.5 w-6 bg-white" />
@@ -81,7 +86,7 @@ export default function Header() {
         </div>
 
         {menuOpen && (
-          <nav className="mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-2xl border border-white/15 bg-ink/70 px-6 py-4 font-body text-white backdrop-blur-md md:hidden">
+          <nav id="mobile-nav" className="mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-2xl border border-white/15 bg-ink/70 px-6 py-4 font-body text-white backdrop-blur-md md:hidden">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}

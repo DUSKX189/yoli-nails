@@ -13,6 +13,7 @@ Fecha: 1 de octubre de 2026.
 7. **Formato de ingredientes y modo de uso**: separadores unificados, sin asteriscos ni puntos finales, textos de relleno vaciados, espacios y erratas de puntuación corregidos. Aplicado por CSV y verificado.
 8. **Pruebas de filtrado**: la búsqueda por tag funciona; el filtro de tag dentro de colección no (requiere Search & Discovery).
 9. **Diseño de colecciones por tags** (6 nuevas + cambio de *Protección solar*), pendiente de verificar.
+10. **Frontend de la tienda (1-oct-2026)** en el repo: `src/lib/shopify/` (cliente, queries, catálogo, carrito), `src/lib/catalog/` (filtros en servidor, etiquetas, saneado), `/tienda` con filtros por URL, `/producto/[handle]`, carrito con Server Actions y cookie httpOnly, webhook `/api/revalidate`. **Probado con la API real (2-oct-2026)**: `ProductsList` y `ProductByHandle` funcionan y los recuentos de filtros coinciden. `cartCreate` con una variante sin stock **no devuelve userErrors**: crea el carrito con la línea a cantidad 0 y un warning `MERCHANDISE_OUT_OF_STOCK` (en inglés); el frontend oculta esas líneas y traduce el aviso. Desviación de `03`: el filtro `marca` usa el slug del `vendor` (`?marca=integra`), no el handle de la colección, para no necesitar otra query. No se han hecho `/coleccion/[handle]` ni `/carrito` (el carrito es un panel lateral).
 
 ## Cómo se modifica el catálogo (lecciones aprendidas)
 

@@ -2,110 +2,86 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
+  useTransition,
   type ReactNode,
 } from "react";
+import {
+  addItem as addItemAction,
+  fetchCart,
+  removeItem as removeItemAction,
+  updateItemQuantity as updateItemQuantityAction,
+  type CartActionResult,
+} from "@/app/actions/cart";
+import type { Cart } from "@/lib/shopify/types";
 
-export type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  quantity: number;
-};
+// El carrito vive en Shopify y su ID en una cookie httpOnly. Este contexto solo
+// refleja el estado que devuelven las Server Actions; se carga en el cliente para
+// que el layout siga siendo estático.
 
 type CartContextValue = {
-  items: CartItem[];
+  cart: Cart | null;
   isOpen: boolean;
+  isPending: boolean;
+  message: string | null;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  totalCount: number;
-  totalPrice: number;
+  addItem: (variantId: string, quantity?: number) => void;
+  updateQuantity: (lineId: string, quantity: number) => void;
+  removeItem: (lineId: string) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "yn-cart";
-
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<Cart | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      if (stored) setItems(JSON.parse(stored));
-    } catch {
-      // ignore corrupted storage
-    }
-    setHydrated(true);
+    startTransition(async () => {
+      const initial = await fetchCart();
+      startTransition(() => setCart(initial));
+    });
   }, []);
 
-  useEffect(() => {
-    if (!hydrated) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items, hydrated]);
-
-  const addItem: CartContextValue["addItem"] = (item, quantity = 1) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + quantity } : i
-        );
-      }
-      return [...prev, { ...item, quantity }];
+  const mutate = useCallback((action: () => Promise<CartActionResult>) => {
+    setMessage(null);
+    startTransition(async () => {
+      const result = await action();
+      startTransition(() => {
+        // Si la acción falla sin devolver carrito, se conserva el que había.
+        setCart((prev) => (result.error && !result.cart ? prev : result.cart));
+        setMessage(result.error ?? result.warnings[0] ?? null);
+      });
     });
-    setIsOpen(true);
-  };
+  }, []);
 
-  const removeItem = (id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
-  };
-
-  const updateQuantity = (id: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeItem(id);
-      return;
-    }
-    setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, quantity } : i))
-    );
-  };
-
-  const totalCount = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity, 0),
-    [items]
-  );
-  const totalPrice = useMemo(
-    () => items.reduce((sum, i) => sum + i.quantity * i.price, 0),
-    [items]
+  const value = useMemo<CartContextValue>(
+    () => ({
+      cart,
+      isOpen,
+      isPending,
+      message,
+      openCart: () => setIsOpen(true),
+      closeCart: () => setIsOpen(false),
+      addItem: (variantId, quantity = 1) => {
+        setIsOpen(true);
+        mutate(() => addItemAction(variantId, quantity));
+      },
+      updateQuantity: (lineId, quantity) =>
+        mutate(() => updateItemQuantityAction(lineId, quantity)),
+      removeItem: (lineId) => mutate(() => removeItemAction(lineId)),
+    }),
+    [cart, isOpen, isPending, message, mutate]
   );
 
-  return (
-    <CartContext.Provider
-      value={{
-        items,
-        isOpen,
-        openCart: () => setIsOpen(true),
-        closeCart: () => setIsOpen(false),
-        addItem,
-        removeItem,
-        updateQuantity,
-        totalCount,
-        totalPrice,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {

@@ -1,23 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { SERVICE_CATEGORIES } from "@/lib/services-data";
 import BookingButton from "@/components/booking-button";
 
-export default function ServiceTabs() {
-  const searchParams = useSearchParams();
-  const initialCat = searchParams.get("cat");
-  const initialIndex = Math.max(
-    0,
-    SERVICE_CATEGORIES.findIndex((c) => c.slug === initialCat)
-  );
-  const [activeIndex, setActiveIndex] = useState(initialIndex);
+/** Lee ?cat= de la URL. Debe ir dentro de <Suspense>; su fallback es <ServiceTabs />. */
+export function ServiceTabsFromUrl() {
+  const cat = useSearchParams().get("cat");
+  return <ServiceTabs key={cat} initialSlug={cat} />;
+}
 
-  const active = useMemo(
-    () => SERVICE_CATEGORIES[activeIndex],
-    [activeIndex]
+export default function ServiceTabs({ initialSlug }: { initialSlug?: string | null }) {
+  const [activeIndex, setActiveIndex] = useState(() =>
+    Math.max(0, SERVICE_CATEGORIES.findIndex((c) => c.slug === initialSlug))
   );
+  const active = SERVICE_CATEGORIES[activeIndex];
 
   return (
     <>
@@ -27,6 +25,7 @@ export default function ServiceTabs() {
             key={cat.slug}
             type="button"
             onClick={() => setActiveIndex(i)}
+            aria-pressed={i === activeIndex}
             className={`relative pb-1 font-display text-lg uppercase tracking-wide transition-all md:text-xl ${
               i === activeIndex
                 ? "font-bold text-wine after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-wine"

@@ -4,11 +4,14 @@ npm-debug.log
 .git
 .gitignore
 README.md
-.env.local
-.env.*.local
 .claude
 .DS_Store
 *.pem
 coverage
 dist
 build
+
+# Secretos: nunca dentro de la imagen; se inyectan en runtime (env_file / Coolify)
+.env
+.env.*
+!.env.example

@@ -5,22 +5,32 @@ import { CartProvider } from "@/components/cart-context";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
+// Ambas familias son variables: sin `weight` se descarga un único fichero por familia.
 const kalnia = Kalnia({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 export const metadata: Metadata = {
-  title: "YOLI NAILS | Salón de belleza y uñas",
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  title: {
+    default: "YOLI NAILS | Salón de belleza y uñas",
+    template: "%s | YOLI NAILS",
+  },
   description:
     "YOLI NAILS — Manicura, pedicura, pestañas, depilación y tienda de productos profesionales de belleza en Salamanca, Madrid. Realza tu belleza, eleva tu confianza.",
+  openGraph: {
+    siteName: "YOLI NAILS",
+    locale: "es_ES",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

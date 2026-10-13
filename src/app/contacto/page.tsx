@@ -2,7 +2,7 @@ import Image from "next/image";
 import { BOOKING_LINKS } from "@/lib/booking-links";
 
 export const metadata = {
-  title: "Contacto | YN",
+  title: "Contacto",
 };
 
 export default function ContactoPage() {
@@ -16,7 +16,7 @@ export default function ContactoPage() {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/45 via-ink/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-ink/45 via-ink/10 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-6 pb-14 pt-32">
           <h1 className="font-display text-5xl font-bold text-white md:text-6xl">
             Contacto

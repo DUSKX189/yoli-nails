@@ -7,11 +7,11 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-14 md:flex-row md:justify-between">
         <div className="flex flex-col gap-4">
           <Image
-            src="/logo/yn-logo.svg"
-            alt="YN"
+            src="/logo/yn-logo-white.svg"
+            alt="YOLI NAILS"
             width={40}
             height={40}
-            className="h-10 w-10 invert"
+            className="h-10 w-10"
           />
           <p className="max-w-xs font-body text-sm text-cream/70">
             Manicura, pedicura, pestañas y depilación realizadas por
