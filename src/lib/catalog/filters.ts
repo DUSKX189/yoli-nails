@@ -1,5 +1,5 @@
 // Filtros del catálogo en el servidor de Next.js, sobre el listado ya cacheado.
-// Estado en la URL: /tienda?tipo=crema-facial&necesidad=antiedad,hidratacion&orden=precio-asc&q=vitamina
+// Estado en la URL: /tienda?tipo=crema-facial&necesidad=antiedad,hidratacion&orden=precio-asc&q=vitamina&pagina=2
 // Dentro de una faceta los valores se suman (OR); entre facetas se restringe (AND).
 
 import type { ProductSummary } from "@/lib/shopify/types";
@@ -26,10 +26,13 @@ export const SORT_OPTIONS = [
 ] as const;
 type SortValue = (typeof SORT_OPTIONS)[number]["value"];
 
+export const PAGE_SIZE = 12;
+
 export type CatalogFilters = {
   facets: Partial<Record<FacetKey, string[]>>;
   q: string;
   orden: SortValue;
+  pagina: number;
 };
 
 type Option = { value: string; label: string };
@@ -76,10 +79,12 @@ export function parseFilters(params: SearchParams): CatalogFilters {
   }
 
   const orden = read("orden");
+  const pagina = Number.parseInt(read("pagina"), 10);
   return {
     facets,
     q: read("q").slice(0, 100),
     orden: SORT_OPTIONS.some((o) => o.value === orden) ? (orden as SortValue) : "",
+    pagina: Number.isFinite(pagina) && pagina > 1 ? pagina : 1,
   };
 }
 
@@ -177,6 +182,7 @@ export function catalogHref(f: CatalogFilters) {
   }
   if (f.q) params.set("q", f.q);
   if (f.orden) params.set("orden", f.orden);
+  if (f.pagina > 1) params.set("pagina", String(f.pagina));
   const query = params.toString().replace(/%2C/g, ",");
   return query ? `/tienda?${query}` : "/tienda";
 }
@@ -185,5 +191,13 @@ export function catalogHref(f: CatalogFilters) {
 export function toggleFacet(f: CatalogFilters, key: FacetKey, value: string): CatalogFilters {
   const current = f.facets[key] ?? [];
   const next = current.includes(value) ? current.filter((v) => v !== value) : [...current, value];
-  return { ...f, facets: { ...f.facets, [key]: next } };
+  return { ...f, facets: { ...f.facets, [key]: next }, pagina: 1 };
+}
+
+/** Trozo de resultados de la página pedida; si se sale del rango, la última página. */
+export function paginate<T>(items: T[], pagina: number) {
+  const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+  const page = Math.min(pagina, totalPages);
+  const start = (page - 1) * PAGE_SIZE;
+  return { items: items.slice(start, start + PAGE_SIZE), page, totalPages, start };
 }

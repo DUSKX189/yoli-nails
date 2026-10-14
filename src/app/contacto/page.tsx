@@ -84,7 +84,7 @@ export default function ContactoPage() {
 
           <div className="flex flex-col gap-4 font-body">
             <div>
-              <p className="text-sm uppercase tracking-wide text-ink/50">
+              <p className="text-sm uppercase tracking-wide text-ink/60">
                 Dirección
               </p>
               <p className="text-lg">
@@ -92,7 +92,7 @@ export default function ContactoPage() {
               </p>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-wide text-ink/50">
+              <p className="text-sm uppercase tracking-wide text-ink/60">
                 Teléfono
               </p>
               <a href="tel:+34664112092" className="text-lg">
@@ -100,7 +100,7 @@ export default function ContactoPage() {
               </a>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-wide text-ink/50">
+              <p className="text-sm uppercase tracking-wide text-ink/60">
                 Horario
               </p>
               <p className="text-lg">Lunes a Viernes, 10:00 – 20:30</p>

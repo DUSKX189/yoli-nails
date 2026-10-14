@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice, hasPrice } from "@/lib/catalog/format";
 import { VEGAN_TAG } from "@/lib/catalog/labels";
+import { productHref } from "@/lib/catalog/routes";
 import type { ProductSummary } from "@/lib/shopify/types";
 
 type ProductCardProps = {
@@ -15,7 +16,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   const onSale = hasPrice(compareAt) && Number(compareAt.amount) > Number(price.amount);
 
   return (
-    <Link href={`/producto/${product.handle}`} className="group flex flex-col gap-3">
+    <Link href={productHref(product)} className="group flex flex-col gap-3">
       <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-cream-dark">
         {product.featuredImage && (
           <Image
@@ -41,7 +42,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         </div>
       </div>
       <div>
-        <p className="font-body text-sm uppercase tracking-wide text-ink/45">{product.vendor}</p>
+        <p className="font-body text-sm uppercase tracking-wide text-ink/60">{product.vendor}</p>
         <p className="font-body text-lg leading-snug text-ink/85 group-hover:text-wine">
           {product.title}
         </p>
@@ -49,7 +50,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           <p className="mt-1 font-body text-lg font-semibold">
             {formatPrice(price)}
             {onSale && (
-              <span className="ml-2 text-base font-normal text-ink/40 line-through">
+              <span className="ml-2 text-base font-normal text-ink/60 line-through">
                 {formatPrice(compareAt)}
               </span>
             )}

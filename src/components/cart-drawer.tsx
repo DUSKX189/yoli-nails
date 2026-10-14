@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useCart } from "@/components/cart-context";
 import { formatPrice } from "@/lib/catalog/format";
+import { productHref } from "@/lib/catalog/routes";
+import { DEFAULT_VARIANT_TITLE } from "@/lib/shopify/constants";
 
 export default function CartDrawer() {
   const { cart, isOpen, isPending, message, closeCart, removeItem, updateQuantity } = useCart();
@@ -83,7 +85,7 @@ export default function CartDrawer() {
                     <div className="flex flex-1 flex-col">
                       <div className="flex items-start justify-between gap-2">
                         <Link
-                          href={`/producto/${merchandise.product.handle}`}
+                          href={productHref(merchandise.product)}
                           onClick={closeCart}
                           className="font-body text-base leading-snug hover:text-wine"
                         >
@@ -94,11 +96,14 @@ export default function CartDrawer() {
                           onClick={() => removeItem(line.id)}
                           disabled={isPending}
                           aria-label={`Eliminar ${title}`}
-                          className="text-ink/40 hover:text-wine"
+                          className="text-ink/60 hover:text-wine"
                         >
                           ×
                         </button>
                       </div>
+                      {merchandise.title !== DEFAULT_VARIANT_TITLE && (
+                        <p className="font-body text-sm text-ink/70">{merchandise.title}</p>
+                      )}
                       <p className="font-body text-sm text-ink/60">
                         {formatPrice(merchandise.price)}
                       </p>
@@ -154,7 +159,7 @@ export default function CartDrawer() {
               Finalizar compra
             </button>
           )}
-          <p className="mt-3 text-center text-xs text-ink/45">
+          <p className="mt-3 text-center text-xs text-ink/60">
             Los gastos de envío se calculan al finalizar la compra.
           </p>
         </div>

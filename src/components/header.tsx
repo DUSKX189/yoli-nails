@@ -8,7 +8,8 @@ import CartDrawer from "@/components/cart-drawer";
 
 const NAV_LINKS = [
   { href: "/servicios", label: "Servicios" },
-  { href: "/tienda", label: "Tienda" },
+  { href: "/tienda", label: "Cuidado Facial" },
+  { href: "/fajas-charlotte", label: "Fajas Charlotte" },
   { href: "/contacto", label: "Contacto" },
 ];
 
@@ -32,7 +33,7 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-10 font-body text-xl font-medium tracking-wide md:flex">
+          <nav className="hidden items-center gap-10 whitespace-nowrap font-body text-xl font-medium tracking-wide lg:flex">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -77,7 +78,7 @@ export default function Header() {
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
-              className="flex h-11 w-11 flex-col items-center justify-center gap-2 md:hidden"
+              className="flex h-11 w-11 flex-col items-center justify-center gap-2 lg:hidden"
             >
               <span className="h-0.5 w-6 bg-white" />
               <span className="h-0.5 w-6 bg-white" />
@@ -86,7 +87,7 @@ export default function Header() {
         </div>
 
         {menuOpen && (
-          <nav id="mobile-nav" className="mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-2xl border border-white/15 bg-ink/70 px-6 py-4 font-body text-white backdrop-blur-md md:hidden">
+          <nav id="mobile-nav" className="mx-auto mt-2 flex max-w-6xl flex-col gap-1 rounded-2xl border border-white/15 bg-ink/70 px-6 py-4 font-body text-white backdrop-blur-md lg:hidden">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}

@@ -54,6 +54,64 @@ export const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
   ${PRODUCT_SUMMARY_FRAGMENT}
 `;
 
+// ─── Fajas Charlotte (ver .claude/06-fajas-charlotte.md) ─────────────────────
+
+export const FAJAS_LIST_QUERY = /* GraphQL */ `
+  query FajasList($handle: String!) {
+    collection(handle: $handle) {
+      products(first: 50) {
+        nodes {
+          ...ProductSummaryFields
+          images(first: 2) { nodes { ${IMAGE_FIELDS} } }
+          options { name optionValues { name swatch { color } } }
+          variants(first: 100) { nodes { availableForSale selectedOptions { name value } } }
+        }
+      }
+    }
+  }
+  ${PRODUCT_SUMMARY_FRAGMENT}
+`;
+
+const METAOBJECT_FIELDS = /* GraphQL */ `fields { key value }`;
+
+export const FAJA_BY_HANDLE_QUERY = /* GraphQL */ `
+  query FajaByHandle($handle: String!) {
+    product(handle: $handle) {
+      ...ProductSummaryFields
+      description
+      descriptionHtml
+      seo { title description }
+      images(first: 20) { nodes { ${IMAGE_FIELDS} } }
+      options { name optionValues { name swatch { color } } }
+      variants(first: 100) {
+        nodes {
+          id
+          title
+          availableForSale
+          quantityAvailable
+          price { amount currencyCode }
+          compareAtPrice { amount currencyCode }
+          selectedOptions { name value }
+          image { ${IMAGE_FIELDS} }
+        }
+      }
+      guia: metafield(namespace: "custom", key: "guia_de_tallas") {
+        reference {
+          ... on Metaobject {
+            fields {
+              key
+              value
+              reference { ... on MediaImage { image { ${IMAGE_FIELDS} } } }
+              references(first: 20) { nodes { ... on Metaobject { ${METAOBJECT_FIELDS} } } }
+            }
+          }
+        }
+      }
+    }
+  }
+  ${PRODUCT_SUMMARY_FRAGMENT}
+`;
+
 const CART_FRAGMENT = /* GraphQL */ `
   fragment CartFields on Cart {
     id
@@ -75,7 +133,7 @@ const CART_FRAGMENT = /* GraphQL */ `
             availableForSale
             price { amount currencyCode }
             image { ${IMAGE_FIELDS} }
-            product { handle title vendor }
+            product { handle title vendor productType }
           }
         }
       }

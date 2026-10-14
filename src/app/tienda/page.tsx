@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import FilterPanel from "@/components/shop/filter-panel";
+import Pagination from "@/components/shop/pagination";
 import ProductCard from "@/components/shop/product-card";
 import {
   applyFilters,
@@ -9,13 +10,14 @@ import {
   FACET_KEYS,
   getFacetGroups,
   hasActiveFilters,
+  paginate,
   parseFilters,
   SORT_OPTIONS,
 } from "@/lib/catalog/filters";
 import { getProducts } from "@/lib/shopify/products";
 
 export const metadata: Metadata = {
-  title: "Tienda",
+  title: "Cuidado Facial",
   description:
     "Cosmética facial profesional seleccionada por YOLI NAILS: limpiadores, sérums, cremas, contorno de ojos y protección solar.",
   alternates: { canonical: "/tienda" },
@@ -31,6 +33,7 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
   const results = applyFilters(products, filters);
   const groups = getFacetGroups(products, filters);
   const filtered = hasActiveFilters(filters);
+  const { items: pageItems, page, totalPages, start } = paginate(results, filters.pagina);
 
   return (
     <>
@@ -45,7 +48,7 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
         />
         <div className="absolute inset-0 bg-linear-to-t from-ink/40 via-ink/5 to-transparent" />
         <div className="relative mx-auto w-full max-w-6xl px-6 pb-14 pt-32">
-          <h1 className="font-display text-5xl font-bold text-white md:text-6xl">Tienda</h1>
+          <h1 className="font-display text-5xl font-bold text-white md:text-6xl">Cuidado Facial</h1>
         </div>
       </section>
 
@@ -108,7 +111,7 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
                 {SORT_OPTIONS.map((option) => (
                   <Link
                     key={option.value}
-                    href={catalogHref({ ...filters, orden: option.value })}
+                    href={catalogHref({ ...filters, orden: option.value, pagina: 1 })}
                     scroll={false}
                     aria-current={filters.orden === option.value ? "true" : undefined}
                     className={
@@ -125,7 +128,9 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
 
             <div className="mt-5 flex items-center justify-between font-body text-ink/60">
               <p aria-live="polite">
-                {results.length} {results.length === 1 ? "producto" : "productos"}
+                {totalPages > 1
+                  ? `${start + 1}–${start + pageItems.length} de ${results.length} productos · Página ${page} de ${totalPages}`
+                  : `${results.length} ${results.length === 1 ? "producto" : "productos"}`}
               </p>
               {filtered && (
                 <Link href="/tienda" scroll={false} className="text-wine underline-offset-4 hover:underline">
@@ -139,11 +144,14 @@ export default async function TiendaPage({ searchParams }: TiendaPageProps) {
                 No hay productos que coincidan con tu búsqueda.
               </p>
             ) : (
-              <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3">
-                {results.map((product, i) => (
-                  <ProductCard key={product.id} product={product} priority={i < 3} />
-                ))}
-              </div>
+              <>
+                <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3">
+                  {pageItems.map((product, i) => (
+                    <ProductCard key={product.id} product={product} priority={i < 3} />
+                  ))}
+                </div>
+                <Pagination filters={filters} page={page} totalPages={totalPages} />
+              </>
             )}
           </div>
         </section>

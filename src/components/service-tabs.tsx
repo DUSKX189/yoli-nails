@@ -29,7 +29,7 @@ export default function ServiceTabs({ initialSlug }: { initialSlug?: string | nu
             className={`relative pb-1 font-display text-lg uppercase tracking-wide transition-all md:text-xl ${
               i === activeIndex
                 ? "font-bold text-wine after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-wine"
-                : "font-medium text-ink/50 hover:text-ink"
+                : "font-medium text-ink/60 hover:text-ink"
             }`}
           >
             {cat.label}

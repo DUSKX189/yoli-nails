@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import AddToCartButton from "@/components/shop/add-to-cart-button";
 import ProductCard from "@/components/shop/product-card";
 import { formatPrice, hasPrice, slugify } from "@/lib/catalog/format";
 import { tagLabel } from "@/lib/catalog/labels";
+import { productHref } from "@/lib/catalog/routes";
 import { sanitizeDescription } from "@/lib/catalog/sanitize";
 import { getProduct, getProducts } from "@/lib/shopify/products";
 import type { Product, ProductSummary } from "@/lib/shopify/types";
@@ -74,6 +75,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
   const [product, all] = await Promise.all([getProduct(handle), getProducts()]);
   if (!product) notFound();
+  // Las fajas tienen su propia ficha (variantes y guía de tallas).
+  const href = productHref(product);
+  if (href !== `/producto/${handle}`) permanentRedirect(href);
 
   const price = product.priceRange.minVariantPrice;
   const variant = product.variants.find((v) => v.availableForSale) ?? product.variants[0];
@@ -98,9 +102,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="bg-wine-dark pb-6 pt-32 md:pt-36" />
 
       <article className="mx-auto max-w-6xl px-6 py-10 md:py-14">
-        <nav aria-label="Ruta" className="mb-8 font-body text-sm text-ink/50">
+        <nav aria-label="Ruta" className="mb-8 font-body text-sm text-ink/60">
           <Link href="/tienda" className="hover:text-wine">
-            Tienda
+            Cuidado Facial
           </Link>
           <span className="mx-2">/</span>
           {product.productType && (
@@ -150,7 +154,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <div className="flex flex-col gap-6">
             <div>
-              <p className="font-body text-sm uppercase tracking-widest text-ink/50">
+              <p className="font-body text-sm uppercase tracking-widest text-ink/60">
                 {product.vendor}
               </p>
               <h1 className="mt-2 font-display text-4xl font-medium leading-tight md:text-5xl">

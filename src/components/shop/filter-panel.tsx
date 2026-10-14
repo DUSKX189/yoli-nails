@@ -33,7 +33,7 @@ export default function FilterPanel({ groups, filters }: FilterPanelProps) {
                     {option.selected && "✓"}
                   </span>
                   <span className="flex-1">{option.label}</span>
-                  <span className="text-sm text-ink/40">{option.count}</span>
+                  <span className="text-sm text-ink/60">{option.count}</span>
                 </>
               );
               return (

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getProducts } from "@/lib/shopify/products";
+import { productHref } from "@/lib/catalog/routes";
+import { getFajas, getProducts } from "@/lib/shopify/products";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
@@ -7,11 +8,14 @@ const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const products = await getProducts().catch(() => []);
-  const pages = ["", "/servicios", "/tienda", "/contacto"];
+  const [products, fajas] = await Promise.all([
+    getProducts().catch(() => []),
+    getFajas().catch(() => []),
+  ]);
+  const pages = ["", "/servicios", "/tienda", "/fajas-charlotte", "/contacto"];
 
   return [
     ...pages.map((path) => ({ url: `${siteUrl}${path}` })),
-    ...products.map((p) => ({ url: `${siteUrl}/producto/${p.handle}` })),
+    ...[...products, ...fajas].map((p) => ({ url: `${siteUrl}${productHref(p)}` })),
   ];
 }

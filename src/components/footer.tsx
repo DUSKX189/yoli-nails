@@ -26,7 +26,10 @@ export default function Footer() {
               Servicios
             </Link>
             <Link href="/tienda" className="font-body text-cream/70 hover:text-cream">
-              Tienda
+              Cuidado Facial
+            </Link>
+            <Link href="/fajas-charlotte" className="font-body text-cream/70 hover:text-cream">
+              Fajas Charlotte
             </Link>
             <Link href="/contacto" className="font-body text-cream/70 hover:text-cream">
               Contacto
