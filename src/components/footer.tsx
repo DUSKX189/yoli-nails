@@ -41,12 +41,7 @@ export default function Footer() {
             <a href="tel:+34664112092" className="font-body text-cream/70 hover:text-cream">
               +34 664 11 20 92
             </a>
-            <a
-              href="mailto:hola@yolinails.com"
-              className="font-body text-cream/70 hover:text-cream"
-            >
-              hola@yolinails.com
-            </a>
+
             <p className="font-body text-cream/70">
               Calle de Núñez de Balboa, 95, Salamanca, 28006 Madrid
             </p>

@@ -23,7 +23,7 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { name: "Limar y Pintar en Permanente", price: "16,90€" },
       { name: "Limar y Pintar con SP + Base de refuerzo", price: "18,90€" },
       { name: "Uñas acrílicas", price: "45€" },
-      { name: "Relleno de Uñas Acrílicas", price: "-€" },
+      { name: "Relleno de Uñas Acrílicas", price: "35€" },
       { name: "Refuerzo de uña natural con Acrílico", price: "30€" },
       { name: "Reconstrucción de uñas mordidas + esmalte", price: "40€" },
       { name: "Reconstrucción de una uña", price: "4€" },
