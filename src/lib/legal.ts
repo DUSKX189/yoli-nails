@@ -22,8 +22,8 @@ export const LEGAL = {
   /** Dirección a la que se envían las devoluciones. */
   returnsAddress: null as LegalField,
   domain: "yoli-nails.com",
-  /** Zonas de envío. Por confirmar si se incluyen Canarias, Ceuta y Melilla. */
-  shippingArea: null as LegalField,
+  /** Zonas de envío. Canarias, Ceuta y Melilla no se incluyen (aduana e impuestos propios). */
+  shippingArea: "Península y Baleares (no enviamos a Canarias, Ceuta ni Melilla)" as LegalField,
   shippingPrice: "6,99 €",
   freeShippingFrom: "55 €",
   deliveryTime: "de 3 a 5 días hábiles",
