@@ -1,4 +1,5 @@
 import Image from "next/image";
+import MapEmbed from "@/components/map-embed";
 import { BOOKING_LINKS } from "@/lib/booking-links";
 
 export const metadata = {
@@ -72,15 +73,7 @@ export default function ContactoPage() {
         </div>
 
         <div className="flex flex-col gap-8">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-cream-dark">
-            <iframe
-              title="Ubicación de YOLI NAILS en el mapa"
-              src="https://www.google.com/maps?q=Calle+de+N%C3%BA%C3%B1ez+de+Balboa+95,+28006+Madrid&output=embed"
-              className="absolute inset-0 h-full w-full border-0"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          <MapEmbed />
 
           <div className="flex flex-col gap-4 font-body">
             <div>

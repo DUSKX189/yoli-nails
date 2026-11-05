@@ -162,6 +162,17 @@ export default function CartDrawer() {
           <p className="mt-3 text-center text-xs text-ink/60">
             Los gastos de envío se calculan al finalizar la compra.
           </p>
+          <p className="mt-1 text-center text-xs text-ink/60">
+            Consulta las{" "}
+            <Link href="/condiciones-de-venta" onClick={closeCart} className="underline">
+              condiciones de venta
+            </Link>{" "}
+            y la{" "}
+            <Link href="/envios-y-devoluciones" onClick={closeCart} className="underline">
+              política de devoluciones
+            </Link>
+            .
+          </p>
         </div>
       </aside>
     </div>

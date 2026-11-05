@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { LEGAL_LINKS } from "@/lib/legal";
 
 export default function Footer() {
   return (
@@ -50,6 +51,13 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-cream/10 px-6 py-5 text-center font-body text-xs text-cream/50">
+        <nav aria-label="Textos legales" className="mb-3 flex flex-wrap justify-center gap-x-5 gap-y-2">
+          {LEGAL_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className="hover:text-cream">
+              {link.label}
+            </Link>
+          ))}
+        </nav>
         © {new Date().getFullYear()} YOLI NAILS. Todos los derechos reservados.
       </div>
     </footer>
