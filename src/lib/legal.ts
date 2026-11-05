@@ -16,7 +16,7 @@ export const LEGAL = {
   /** Solo si es una sociedad: datos de inscripción en el Registro Mercantil. */
   commercialRegistry: null as LegalField,
   /** Correo de contacto para clientes y para ejercer derechos de privacidad. */
-  email: null as LegalField,
+  email: "gestionwebyolinails@gmail.com" as LegalField,
   phone: "+34 664 11 20 92",
   shopAddress: "Calle de Núñez de Balboa, 95, 28006 Madrid",
   /** Dirección a la que se envían las devoluciones. */
