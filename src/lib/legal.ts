@@ -8,9 +8,9 @@ export const LEGAL = {
   /** Nombre comercial. */
   tradeName: "YOLI NAILS",
   /** Nombre y apellidos (autónoma) o razón social (SL). */
-  holderName: null as LegalField,
+  holderName: "Yohelimar Del Mar" as LegalField,
   /** NIF o CIF. */
-  taxId: null as LegalField,
+  taxId: "12345678X" as LegalField,
   /** Domicilio fiscal o social. */
   registeredAddress: null as LegalField,
   /** Solo si es una sociedad: datos de inscripción en el Registro Mercantil. */
