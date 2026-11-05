@@ -10,7 +10,7 @@ export const LEGAL = {
   /** Nombre y apellidos (autónoma) o razón social (SL). */
   holderName: "Yohelimar Del Mar" as LegalField,
   /** NIF o CIF. */
-  taxId: "12345678X" as LegalField,
+  taxId: "60186326H" as LegalField,
   /** Domicilio fiscal o social. */
   registeredAddress: null as LegalField,
   /** Solo si es una sociedad: datos de inscripción en el Registro Mercantil. */
