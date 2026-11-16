@@ -8,26 +8,26 @@ export const LEGAL = {
   /** Nombre comercial. */
   tradeName: "YOLI NAILS",
   /** Nombre y apellidos (autónoma) o razón social (SL). */
-  holderName: "Yohelimar Del Mar" as LegalField,
+  holderName: "Yohelimar del Valle Castillo Salinas" as LegalField,
   /** NIF o CIF. */
   taxId: "60186326H" as LegalField,
   /** Domicilio fiscal o social. */
-  registeredAddress: null as LegalField,
+  registeredAddress: "Calle de Núñez de Balboa, 95, Local L10, 28006 Madrid" as LegalField,
   /** Solo si es una sociedad: datos de inscripción en el Registro Mercantil. */
   commercialRegistry: null as LegalField,
   /** Correo de contacto para clientes y para ejercer derechos de privacidad. */
   email: "gestionwebyolinails@gmail.com" as LegalField,
   phone: "+34 664 11 20 92",
-  shopAddress: "Calle de Núñez de Balboa, 95, 28006 Madrid",
+  shopAddress: "Calle de Núñez de Balboa, 95, Local L10, 28006 Madrid",
   /** Dirección a la que se envían las devoluciones. */
-  returnsAddress: null as LegalField,
+  returnsAddress: "YOLI NAILS, Calle de Núñez de Balboa, 95, Local L10, 28006 Madrid" as LegalField,
   domain: "yoli-nails.com",
   /** Zonas de envío. Canarias, Ceuta y Melilla no se incluyen (aduana e impuestos propios). */
   shippingArea: "Península y Baleares (no enviamos a Canarias, Ceuta ni Melilla)" as LegalField,
   shippingPrice: "6,99 €",
   freeShippingFrom: "55 €",
   deliveryTime: "de 3 a 5 días hábiles",
-  lastUpdated: "5 de noviembre de 2026",
+  lastUpdated: "16 de noviembre de 2026",
 };
 
 export const LEGAL_LINKS = [
